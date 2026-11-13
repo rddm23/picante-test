@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FFF6E8">
+<title>Picante — Spicy short videos, made by everyone.</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ AUTH VIEW ============ -->
+  <section id="view-auth" class="view">
+    <div class="auth-wrap">
+      <div class="brand">
+        <span class="flame" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="56" height="56" fill="none" aria-hidden="true">
+            <path d="M12 2C12 2 5 8.5 5 13.5a7 7 0 0 0 14 0C19 9 15.5 6 15.5 6c.8 2.2-.3 3.6-1.5 4.4C13 8 12 5 12 2Z" fill="#C1272D"/>
+            <path d="M12 10c-1.8 1.6-3 3.2-3 5a3 3 0 0 0 6 0c0-1.8-1.2-3.4-3-5Z" fill="#F0A500"/>
+          </svg>
+        </span>
+        <h1 class="wordmark">Picante</h1>
+        <p class="tagline">Spicy short videos, made by everyone.</p>
+      </div>
+
+      <div class="auth-card">
+        <div class="auth-tabs" role="tablist">
+          <button type="button" id="tab-signup" class="auth-tab active" role="tab">Sign up</button>
+          <button type="button" id="tab-login" class="auth-tab" role="tab">Log in</button>
+        </div>
+
+        <form id="form-signup" novalidate>
+          <label>Username
+            <input type="text" name="username" autocomplete="username" required minlength="3" placeholder="yourname">
+          </label>
+          <label>Password
+            <input type="password" name="password" autocomplete="new-password" required minlength="6" placeholder="At least 6 characters">
+          </label>
+          <label>Display name
+            <input type="text" name="displayName" autocomplete="name" required placeholder="Your name">
+          </label>
+          <label>Date of birth
+            <input type="date" name="dob" required>
+          </label>
+          <p class="age-note">You must be 13 or older to join.</p>
+          <p class="form-error" id="signup-error" role="alert" hidden></p>
+          <button type="submit" class="btn btn-primary btn-block">Create account</button>
+        </form>
+
+        <form id="form-login" novalidate hidden>
+          <label>Username
+            <input type="text" name="username" autocomplete="username" required placeholder="yourname">
+          </label>
+          <label>Password
+            <input type="password" name="password" autocomplete="current-password" required placeholder="Your password">
+          </label>
+          <p class="form-error" id="login-error" role="alert" hidden></p>
+          <button type="submit" class="btn btn-primary btn-block">Log in</button>
+        </form>
+      </div>
+
+      <p class="legal-links">
+        <button type="button" class="linklike" data-legal="terms">Terms of Service</button>
+        <span aria-hidden="true">·</span>
+        <button type="button" class="linklike" data-legal="privacy">Privacy Policy</button>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ FEED VIEW ============ -->
+  <section id="view-feed" class="view" hidden>
+    <header class="feed-topbar">
+      <div class="feed-brand">
+        <span class="flame flame-sm" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true">
+            <path d="M12 2C12 2 5 8.5 5 13.5a7 7 0 0 0 14 0C19 9 15.5 6 15.5 6c.8 2.2-.3 3.6-1.5 4.4C13 8 12 5 12 2Z" fill="#C1272D"/>
+            <path d="M12 10c-1.8 1.6-3 3.2-3 5a3 3 0 0 0 6 0c0-1.8-1.2-3.4-3-5Z" fill="#F0A500"/>
+          </svg>
+        </span>
+        <span class="wordmark wordmark-sm">Picante</span>
+      </div>
+      <div class="feed-top-actions">
+        <button type="button" id="btn-mute" class="icon-btn" aria-label="Unmute" title="Mute / unmute">🔇</button>
+        <button type="button" id="btn-go-profile" class="icon-btn" aria-label="My profile" title="My profile">👤</button>
+      </div>
+    </header>
+
+    <nav class="mood-chips" aria-label="Filter by mood">
+      <button type="button" class="chip active" data-mood="all">All</button>
+      <button type="button" class="chip" data-mood="caliente">🔥 Caliente</button>
+      <button type="button" class="chip" data-mood="chill">🌿 Chill</button>
+      <button type="button" class="chip" data-mood="foodie">🍽️ Foodie</button>
+      <button type="button" class="chip" data-mood="streets">🏙️ Streets</button>
+    </nav>
+
+    <div id="feed-scroll" class="feed-scroll">
+      <div id="feed-empty" class="feed-empty" hidden>
+        <span class="flame" aria-hidden="true">🌶️</span>
+        <p>No videos yet — be the first to post!</p>
+        <button type="button" class="btn btn-primary" id="btn-empty-upload">Upload a video</button>
+      </div>
+      <!-- video slides injected here -->
+    </div>
+
+    <button type="button" id="btn-upload-fab" class="fab" aria-label="Upload a video" title="Upload a video">＋</button>
+  </section>
+
+  <!-- ============ UPLOAD VIEW ============ -->
+  <section id="view-upload" class="view" hidden>
+    <div class="page-wrap">
+      <header class="page-header">
+        <button type="button" class="btn btn-ghost" data-nav="feed">← Back</button>
+        <h2>Upload a video</h2>
+      </header>
+      <form id="form-upload" novalidate>
+        <label class="file-picker">
+          <span id="file-label">Choose a video (MP4, MOV, or WebM)</span>
+          <input type="file" id="upload-file" name="video" accept="video/mp4,video/quicktime,video/webm" required>
+        </label>
+        <video id="upload-preview" controls playsinline hidden></video>
+        <label>Caption
+          <input type="text" name="caption" maxlength="220" placeholder="Say something spicy…">
+        </label>
+        <fieldset class="mood-picker">
+          <legend>Mood</legend>
+          <label><input type="radio" name="mood" value="caliente" checked> 🔥 Caliente</label>
+          <label><input type="radio" name="mood" value="chill"> 🌿 Chill</label>
+          <label><input type="radio" name="mood" value="foodie"> 🍽️ Foodie</label>
+          <label><input type="radio" name="mood" value="streets"> 🏙️ Streets</label>
+        </fieldset>
+        <p class="form-error" id="upload-error" role="alert" hidden></p>
+        <button type="submit" class="btn btn-primary btn-block" id="btn-upload-submit">Post video</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ PROFILE VIEW ============ -->
+  <section id="view-profile" class="view" hidden>
+    <div class="page-wrap profile-wrap">
+      <header class="page-header">
+        <button type="button" class="btn btn-ghost" data-nav="feed">← Back to feed</button>
+      </header>
+      <div id="profile-content"><!-- injected --></div>
+    </div>
+  </section>
+
+  <!-- ============ LEGAL VIEW ============ -->
+  <section id="view-legal" class="view" hidden>
+    <div class="page-wrap">
+      <header class="page-header">
+        <button type="button" class="btn btn-ghost" id="btn-legal-back">← Back</button>
+      </header>
+      <h2 id="legal-title">Legal</h2>
+      <div id="legal-body" class="legal-body"></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ============ BOTTOM SHEETS ============ -->
+<div id="sheet-backdrop" class="sheet-backdrop" hidden></div>
+
+<div id="sheet-comments" class="sheet" role="dialog" aria-label="Comments" hidden>
+  <div class="sheet-handle" aria-hidden="true"></div>
+  <div class="sheet-header">
+    <h3>Comments</h3>
+    <button type="button" class="icon-btn sheet-close" data-close-sheet aria-label="Close comments">✕</button>
+  </div>
+  <div id="comments-list" class="comments-list"></div>
+  <form id="form-comment" class="comment-form">
+    <input type="text" id="comment-input" placeholder="Add a comment…" maxlength="500" required autocomplete="off">
+    <button type="submit" class="btn btn-primary">Post</button>
+  </form>
+</div>
+
+<div id="sheet-more" class="sheet" role="dialog" aria-label="More options" hidden>
+  <div class="sheet-handle" aria-hidden="true"></div>
+  <div class="sheet-header">
+    <h3 id="more-title">More</h3>
+    <button type="button" class="icon-btn sheet-close" data-close-sheet aria-label="Close">✕</button>
+  </div>
+  <div class="sheet-actions">
+    <button type="button" class="btn btn-block sheet-action" id="btn-more-report">🚩 Report this video</button>
+    <button type="button" class="btn btn-block sheet-action" id="btn-more-block">🚫 Block <span id="more-block-user"></span></button>
+  </div>
+</div>
+
+<div id="sheet-report" class="sheet" role="dialog" aria-label="Report video" hidden>
+  <div class="sheet-handle" aria-hidden="true"></div>
+  <div class="sheet-header">
+    <h3>Report this video</h3>
+    <button type="button" class="icon-btn sheet-close" data-close-sheet aria-label="Close">✕</button>
+  </div>
+  <form id="form-report" class="sheet-actions">
+    <label>Reason
+      <select name="reason" required>
+        <option value="spam">Spam</option>
+        <option value="nudity">Nudity</option>
+        <option value="violence">Violence</option>
+        <option value="harassment">Harassment</option>
+        <option value="copyright">Copyright</option>
+        <option value="other">Other</option>
+      </select>
+    </label>
+    <label>Details (optional)
+      <textarea name="details" rows="3" maxlength="1000" placeholder="Tell us a little more…"></textarea>
+    </label>
+    <p class="form-error" id="report-error" role="alert" hidden></p>
+    <button type="submit" class="btn btn-primary btn-block">Submit report</button>
+  </form>
+</div>
+
+<div id="confirm-modal" class="sheet" role="alertdialog" aria-label="Confirm" hidden>
+  <div class="sheet-handle" aria-hidden="true"></div>
+  <h3 id="confirm-title">Are you sure?</h3>
+  <p id="confirm-text"></p>
+  <div class="sheet-actions">
+    <button type="button" class="btn btn-primary btn-block" id="btn-confirm-yes">Yes, do it</button>
+    <button type="button" class="btn btn-ghost btn-block" data-close-sheet>Cancel</button>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" hidden></div>
+
+<script src="app.js"></script>
+</body>
+</html>

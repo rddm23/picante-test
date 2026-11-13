@@ -1,0 +1,32 @@
+# Render Blueprint for Picante test deployment ($0 free tier)
+# Deploy: Render dashboard -> New -> Blueprint -> connect the GitHub repo.
+# WARNING: Render's free PostgreSQL expires 30 days after creation.
+# Note the creation date the day you deploy and upgrade ($6/mo) or export before then.
+
+services:
+  - type: web
+    name: picante-test
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: picante-db
+          property: connectionString
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+
+databases:
+  - name: picante-db
+    plan: free
